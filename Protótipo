@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARQUIVO #07 — Investigação Científica</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --preto: #080808;
+      --preto2: #111111;
+      --vermelho: #b40000;
+      --vermelho2: #e00000;
+      --branco: #f2f2f2;
+      --cinza: #a9a9a9;
+      --amarelo: #e5c400;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(180,0,0,.18), transparent 35%),
+        linear-gradient(rgba(0,0,0,.93), rgba(0,0,0,.98)),
+        #050505;
+      color: var(--branco);
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .08;
+      background-image:
+        repeating-linear-gradient(0deg, transparent 0 3px, #fff 4px),
+        repeating-linear-gradient(90deg, transparent 0 5px, #fff 6px);
+      mix-blend-mode: overlay;
+    }
+
+    .fita {
+      height: 34px;
+      background: repeating-linear-gradient(
+        135deg,
+        var(--amarelo) 0 22px,
+        #161616 22px 44px
+      );
+      border-top: 2px solid #000;
+      border-bottom: 2px solid #000;
+      transform: rotate(-1deg) scale(1.05);
+      margin: 8px -10px 30px;
+    }
+
+    .container {
+      width: min(92%, 760px);
+      margin: auto;
+      padding-bottom: 60px;
+    }
+
+    .stamp {
+      display: inline-block;
+      border: 2px solid var(--vermelho2);
+      color: var(--vermelho2);
+      padding: 6px 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      transform: rotate(-3deg);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 10vw, 4.8rem);
+      line-height: .9;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: -2px;
+    }
+
+    h1 span { color: var(--vermelho2); }
+
+    .subtitle {
+      color: var(--cinza);
+      line-height: 1.5;
+      max-width: 620px;
+    }
+
+    .panel {
+      background: rgba(15,15,15,.94);
+      border: 1px solid #343434;
+      border-left: 5px solid var(--vermelho);
+      padding: 22px;
+      margin-top: 22px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.45);
+    }
+
+    .panel h2 {
+      margin-top: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .warning {
+      border: 1px solid #6f5d00;
+      background: rgba(229,196,0,.06);
+      color: #eee;
+      padding: 13px;
+      margin: 18px 0;
+      font-size: .92rem;
+    }
+
+    button {
+      width: 100%;
+      border: 1px solid #777;
+      background: #161616;
+      color: white;
+      padding: 15px;
+      margin: 8px 0;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: .2s;
+    }
+
+    button:hover {
+      border-color: var(--vermelho2);
+      background: #260000;
+      transform: translateX(3px);
+    }
+
+    .main-btn {
+      background: var(--vermelho);
+      border-color: var(--vermelho2);
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .main-btn:hover { background: #d00000; }
+
+    .hidden { display: none; }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .evidence {
+      min-height: 130px;
+      border: 1px solid #454545;
+      background:
+        linear-gradient(rgba(255,255,255,.025), rgba(255,255,255,.01)),
+        #0d0d0d;
+      padding: 16px;
+    }
+
+    .evidence strong {
+      color: var(--vermelho2);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .scientist {
+      border: 1px dashed #666;
+      background: #0a0a0a;
+      padding: 18px;
+      margin-top: 15px;
+    }
+
+    .scientist .tag {
+      display: inline-block;
+      color: var(--amarelo);
+      border: 1px solid var(--amarelo);
+      padding: 4px 7px;
+      font-size: .75rem;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .success {
+      border-color: #7b0000;
+      background: rgba(180,0,0,.08);
+    }
+
+    footer {
+      color: #777;
+      text-align: center;
+      font-size: .78rem;
+      margin-top: 35px;
+    }
+
+    @media (max-width: 520px) {
+      .evidence-grid { grid-template-columns: 1fr; }
+      .panel { padding: 17px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="fita"></div>
+
+  <main class="container">
+
+    <!-- TELA INICIAL -->
+    <section id="inicio">
+      <div class="stamp">ACESSO RESTRITO</div>
+
+      <h1>ARQUIVO <span>#07</span></h1>
+
+      <p class="subtitle">
+        Uma ocorrência foi registrada. Existem evidências, mas parte das informações
+        está oculta. Sua missão é analisar as pistas usando ciência.
+      </p>
+
+      <div class="panel">
+        <h2>⚠️ Caso em investigação</h2>
+        <p>
+          Observe as evidências, responda às perguntas e descubra como a ciência
+          ajuda a revelar aquilo que nossos olhos não conseguem perceber.
+        </p>
+
+        <div class="warning">
+          PROTOCOLO: não toque nas evidências físicas da exposição sem autorização.
+        </div>
+
+        <button class="main-btn" onclick="abrirCaso()">
+          INICIAR INVESTIGAÇÃO
+        </button>
+      </div>
+    </section>
+
+    <!-- INVESTIGAÇÃO -->
+    <section id="caso" class="hidden">
+      <div class="stamp">CASO ABERTO</div>
+      <h1>ANÁLISE <span>01</span></h1>
+
+      <div class="panel">
+        <h2>🔎 Evidências encontradas</h2>
+        <p>Escolha uma evidência para investigar.</p>
+
+        <div class="evidence-grid">
+          <button class="evidence" onclick="mostrar('digital')">
+            <strong>🖐 DIGITAL</strong>
+            Uma marca foi encontrada.
+          </button>
+
+          <button class="evidence" onclick="mostrar('uv')">
+            <strong>🔦 LUZ UV</strong>
+            Existe uma informação que não aparece sob luz comum.
+          </button>
+
+          <button class="evidence" onclick="mostrar('radio')">
+            <strong>☢ RADIAÇÃO</strong>
+            Uma descoberta científica mudou a história da ciência.
+          </button>
+
+          <button class="evidence" onclick="mostrar('cientista')">
+            <strong>👩‍🔬 ARQUIVO</strong>
+            Uma cientista está ligada ao caso.
+          </button>
+        </div>
+
+        <div id="resultado" class="panel hidden"></div>
+      </div>
+
+      <div class="panel">
+        <h2>🧪 Pergunta do investigador</h2>
+        <p>
+          Qual tecnologia é usada para revelar algumas substâncias que fluorescem
+          quando recebem radiação ultravioleta?
+        </p>
+
+        <button onclick="responder(false)">A) Uma lâmpada comum</button>
+        <button onclick="responder(true)">B) Uma fonte de luz UV</button>
+        <button onclick="responder(false)">C) Uma lanterna sem luz</button>
+
+        <div id="resposta" class="hidden"></div>
+      </div>
+
+      <button class="main-btn" onclick="finalizar()">
+        FINALIZAR CASO
+      </button>
+    </section>
+
+    <!-- FINAL -->
+    <section id="final" class="hidden">
+      <div class="stamp">ARQUIVO CONCLUÍDO</div>
+      <h1>CASO <span>SOLUCIONADO</span></h1>
+
+      <div class="panel success">
+        <h2>✓ Investigação concluída</h2>
+        <p>
+          A ciência permite observar, medir e interpretar evidências que não seriam
+          percebidas apenas a olho nu.
+        </p>
+        <p>
+          Agora é hora de conhecer algumas das mulheres que ajudaram a construir
+          o conhecimento científico usado até hoje.
+        </p>
+      </div>
+
+      <div class="panel">
+        <h2>👩‍🔬 Próxima etapa</h2>
+        <p>
+          Visite a nossa exposição física e procure pelas fichas das cientistas.
+          Cada uma delas guarda uma parte dessa história.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      PROJETO — MULHERES NA CIÊNCIA · IFES
+    </footer>
+
+  </main>
+
+  <script>
+    function abrirCaso() {
+      document.getElementById("inicio").classList.add("hidden");
+      document.getElementById("caso").classList.remove("hidden");
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+
+    function mostrar(tipo) {
+      const resultado = document.getElementById("resultado");
+      resultado.classList.remove("hidden");
+
+      const textos = {
+        digital: `
+          <h2>🖐 Evidência: digital</h2>
+          <p>
+            Impressões digitais podem ser utilizadas na identificação forense.
+            Na exposição física, observe como diferentes técnicas podem tornar
+            marcas mais visíveis.
+          </p>
+        `,
+        uv: `
+          <h2>🔦 Evidência: luz UV</h2>
+          <p>
+            Algumas substâncias absorvem radiação ultravioleta e podem emitir
+            luz visível, um fenômeno chamado fluorescência.
+          </p>
+          <p><strong>MISSÃO:</strong> compare o que aparece sob luz normal com o que aparece sob UV na nossa bancada.</p>
+        `,
+        radio: `
+          <h2>☢ Evidência: radioatividade</h2>
+          <p>
+            O estudo da radioatividade transformou a Física, a Química e áreas
+            da Medicina. Na exposição, procure o arquivo dedicado às cientistas
+            que participaram dessa história.
+          </p>
+        `,
+        cientista: `
+          <h2>👩‍🔬 Arquivo científico</h2>
+          <div class="scientist">
+            <div class="tag">FICHA DE INVESTIGAÇÃO</div>
+            <h3>Marie Curie</h3>
+            <p>
+              Pesquisadora fundamental para o estudo da radioatividade e primeira
+              pessoa a receber dois Prêmios Nobel em áreas científicas diferentes.
+            </p>
+            <p>
+              <strong>Conexão com o caso:</strong> seu trabalho ajudou a ampliar
+              o conhecimento sobre fenômenos radioativos e suas aplicações.
+            </p>
+          </div>
+        `
+      };
+
+      resultado.innerHTML = textos[tipo];
+    }
+
+    function responder(correta) {
+      const resposta = document.getElementById("resposta");
+      resposta.classList.remove("hidden");
+
+      if (correta) {
+        resposta.innerHTML = `
+          <div class="panel success">
+            <h3>✓ RESPOSTA CORRETA</h3>
+            <p>
+              A radiação UV pode fazer determinadas substâncias fluorescerem,
+              tornando-as visíveis em condições adequadas.
+            </p>
+          </div>
+        `;
+      } else {
+        resposta.innerHTML = `
+          <div class="panel">
+            <h3>✕ EVIDÊNCIA INSUFICIENTE</h3>
+            <p>Observe novamente a pista e tente outra alternativa.</p>
+          </div>
+        `;
+      }
+    }
+
+    function finalizar() {
+      document.getElementById("caso").classList.add("hidden");
+      document.getElementById("final").classList.remove("hidden");
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+  </script>
+</body>
+</html>
